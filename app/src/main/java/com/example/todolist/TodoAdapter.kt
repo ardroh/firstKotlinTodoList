@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_todo.view.*
 
 class TodoAdapter(
-    private val todos: MutableList<Todo>
 ) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
+    private var todos: MutableList<Todo> = mutableListOf()
+    private lateinit var onTodoCheckedCallback : (todo: Todo) -> Unit;
+
     class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
@@ -23,14 +25,13 @@ class TodoAdapter(
         )
     }
 
-    fun addTodo(todo: Todo) {
-        todos.add(todo)
-        notifyItemInserted(todos.size - 1)
+    fun updateTodos(updatedTodos: MutableList<Todo>) {
+        this.todos = updatedTodos
+        notifyDataSetChanged()
     }
 
-    fun deleteDoneTodos() {
-        todos.removeAll { todo -> todo.isChecked }
-        notifyDataSetChanged()
+    fun setOnTodoChecked(callback: (todo: Todo) -> Unit) {
+        this.onTodoCheckedCallback = callback
     }
 
     private fun toggleStrikeThrough(tvTodoTitle: TextView, isChecked: Boolean) {
@@ -42,15 +43,19 @@ class TodoAdapter(
     }
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
-        val curTodo = todos[position]
         holder.itemView.apply {
+            val curTodo = todos[position]
             tvTodoTitle.text = curTodo.title
+            cbDone.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked == curTodo.isChecked) {
+                    return@setOnCheckedChangeListener
+                }
+                toggleStrikeThrough(tvTodoTitle, isChecked)
+                curTodo.isChecked = isChecked
+                onTodoCheckedCallback(curTodo)
+            }
             cbDone.isChecked = curTodo.isChecked
             toggleStrikeThrough(tvTodoTitle, curTodo.isChecked)
-            cbDone.setOnCheckedChangeListener { _, isChecked ->
-                toggleStrikeThrough(tvTodoTitle, isChecked)
-                curTodo.isChecked = !curTodo.isChecked
-            }
         }
     }
 
