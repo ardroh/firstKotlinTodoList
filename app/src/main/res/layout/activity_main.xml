@@ -17,11 +17,13 @@
 
     <EditText
         android:id="@+id/etTodoTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Enter Todo Title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnAddTodo"
+        android:layout_margin="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddTodo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -29,14 +31,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add TODO"
-        app:layout_constraintBottom_toBottomOf="@+id/etTodoTitle"
-        app:layout_constraintEnd_toStartOf="@+id/btnDeleteDoneTodos" />
+        android:layout_marginStart="10sp"
+        android:layout_marginBottom="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnDeleteDoneTodos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete done"
-        app:layout_constraintBottom_toBottomOf="@+id/etTodoTitle"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_marginEnd="10sp"
+        android:layout_marginBottom="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
